@@ -1,0 +1,138 @@
+.fakultelogo {
+    margin: 10px;
+    display: block;
+    float: left;
+    width: 70px;
+    height: 70px;
+}
+
+.depname {
+    padding-top: 10px;
+    display: block;
+    float: left;
+    color: #16394e;
+}
+
+.donemname{
+    color: #16394e;
+    padding-top: 10px;
+    display: block;
+    float: right;
+    margin-right: 6%;
+}
+
+.evrakekle{
+    display: block; 
+    float: right;
+    margin-right: 6%;
+    margin-top: 2vh;
+}
+
+.tumunuindir{
+    display: block;
+    float: right;
+    margin-top: 2vh;
+}
+
+.mavikutu{
+    position: relative; 
+    left: 10vh;
+    background-color: #a3cbe3;
+    width: 170vh;
+    height: 250px;
+    border-radius: 5px;
+    margin: 50px;
+    border: solid 1px #16394e;
+}
+
+.koyukutu{
+    background-color: #16394e;
+    width: 125px;
+    height: 200px;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
+
+:root {
+    --gutter: 180px;
+  }
+
+.horizonal-slider {
+    display: grid;
+    grid-gap: calc(var(--gutter) / 2);
+    grid-template-columns: repeat(2000, calc(50% - var(--gutter) * 2));
+    grid-template-rows: minmax(150px, 1fr);
+    
+    overflow-x: scroll;
+    scroll-snap-type: x proximity;
+    padding-bottom: calc(.75 * var(--gutter));
+    margin-bottom: calc(-.25 * var(--gutter));
+    list-style: none;
+    padding: 10px;
+  }
+  
+  .horizontal-slider-container {
+    width: 100%;
+    height: 667px;
+    background: #DBD0BC;
+    overflow-y: scroll;
+  }
+  
+  .item {
+    scroll-snap-align: center;
+    padding: calc(var(--gutter) / 2 * 1.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+  }
+
+.horizonal-slideriki {
+
+    display: grid;
+    grid-gap: calc(var(--gutter) );
+    grid-template-columns: repeat(2000, calc(50% - var(--gutter) * 4));
+    grid-template-rows: minmax(150px, 1fr);
+    
+    overflow-x: scroll;
+    scroll-snap-type: x proximity;
+    padding-bottom: calc(.75 * var(--gutter) * 2);
+    margin-bottom: calc(-.25 * var(--gutter) * 2);
+    list-style: none;
+    padding: 10px;
+  }
+  
+  .horizontal-slider-containeriki {
+    width: 100%;
+    height: 667px;
+    background: #DBD0BC;
+    overflow-y: scroll;
+  }
+  
+  .itemiki {
+    scroll-snap-align: center;
+    padding: calc(var(--gutter) * 1.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+  }
+
+  .kazanimkutu{
+    background-color: #16394e;
+    width: 125px;
+    height: 150px;
+    margin-left: 20px;
+    border-radius: 5px;
+  }
+
+  .kazanimbaslik{
+    color: #f5f5f5;
+    padding-top: 50px;
+
+  }

@@ -1,0 +1,36 @@
+.upperbar{
+    height: 120px;
+    background-color: #16394e;
+}
+.mudeklogo{
+    position: relative;
+    right: 15px;
+    bottom: 12.5px;
+    float: right;
+    height: 60px;
+    width: 183px;
+    padding: 3px;
+    margin: 5px;
+}
+.ankulogo{
+    position: relative;
+    left: 15px;
+    bottom: 20px;
+    float: left;
+    height: 80px;
+    width: 80px;
+    padding: 3px;
+    margin: 5px;
+}
+.bartitle{
+    color: white;
+    font-size: 25px;
+}
+.navbuttons{
+    padding: 10px;
+    margin: 5px;
+}
+.backgroundbuttons{
+    background-color: #ffffff;
+     color: #16394e;
+}
