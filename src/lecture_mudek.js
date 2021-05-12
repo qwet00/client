@@ -32,7 +32,7 @@ function Lecture_Mudek() {
   const [examRank, setExamRank] = useState("");
   const [examType, setExamType] = useState("");
   useEffect(() => {
-if(sessionStorage.getItem("isDocPage")===true){
+if(sessionStorage.getItem("isDocPage")==='true'){
   API.post("/api/asistan/donemGoruntule",{
       idrequest:sessionStorage.getItem("donemId")
   }).then((response) => {

@@ -18,7 +18,7 @@ function Asistant() {
 
 });
 
-  setLoginStatus(sessionStorage.getItsem("name"));
+  setLoginStatus(sessionStorage.getItem("name"));
   setLoginLevel(sessionStorage.getItem("level"));
 }else{
   window.location.href = '/';

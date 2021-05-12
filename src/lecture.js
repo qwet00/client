@@ -45,7 +45,7 @@ function Lecture() {
   const [uploadedImg, setUplodedImg] = useState("");
   const [uploadProgress, setProgress] = useState(0);
   useEffect(() => {
-if(sessionStorage.getItem("isDocPage")===true){
+if(sessionStorage.getItem("isDocPage")==='true'){
   API.post("/api/asistan/donemGoruntule",{
       idrequest:sessionStorage.getItem("donemId")
   }).then((response) => {
