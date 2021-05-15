@@ -494,7 +494,7 @@ if(event.target.value){
 
   <hr/>
 
-  <embed style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ref={docSrc}></embed>
+  <embed style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ref={docSrc}/>
 
   <form style = {{ marginTop: '50px',marginRight:'5px',float:'right'}} >
       <div style = {{ margin: '5px',position: 'relative', right: '79px', color: ' #16394e'}}>
