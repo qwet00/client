@@ -10,7 +10,7 @@ import Axios from "axios";
 import './departmentdocs.css';
 import { Progress } from 'reactstrap';
 import API from './config/config';
-
+import { Document, Page } from "react-pdf";
 
 function DepartmentDocs() {
 
