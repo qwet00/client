@@ -10,7 +10,7 @@ import Axios from "axios";
 import './departmentdocs.css';
 import { Progress } from 'reactstrap';
 import API from './config/config';
-
+import { Document, Page } from "react-pdf";
 
 function DepartmentDocs() {
 
@@ -494,7 +494,7 @@ if(event.target.value){
 
   <hr/>
 
-  <iframe style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ref={docSrc}/>  </iframe>
+  <Document style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}}  src={placeholder} ref={docSrc}/>  </Document>
 
   <form style = {{ marginTop: '50px',marginRight:'5px',float:'right'}} >
       <div style = {{ margin: '5px',position: 'relative', right: '79px', color: ' #16394e'}}>
