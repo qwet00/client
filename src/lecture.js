@@ -20,11 +20,18 @@ function Lecture() {
   const[lectureDocs,setLectureDocs]= useState([]);
   const[examDocs,setExamDocs]= useState([]);
   const[kazanimlar,setKazanimlar]= useState([]);
+  const[anketDocs,setAnketDocs]= useState([]);
 
   const lecDocName = useRef(null);
   const lecDocSrc = useRef(null);
   const lecDocExp = useRef(null);
   const [seciliLecDoc, setSeciliLecDoc] = useState("");
+
+
+  const anketDocName = useRef(null);
+  const anketDocSrc = useRef(null);
+  const anketDocExp = useRef(null);
+  const [seciliAnketDoc, setSeciliAnketDoc] = useState("");
 
   const kazanimExp = useRef(null);
   const kazanimSrc = useRef(null);
@@ -72,6 +79,14 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 
     }).then((response) => {
       setLectureDocs( response.data);
+
+    });
+
+    API.post("/api/egitmen/anketDocGoruntule",{
+        lecDetID:response.data[0].lecture_det_id
+
+    }).then((response) => {
+      setAnketDocs( response.data);
 
     });
 
@@ -334,6 +349,93 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 
 
 
+  const anketDocInputChanged = async e =>{
+    if(e.target.files.length>0){
+    setChangedDoc(e.target.files[0])
+
+
+  }else{
+
+  setChangedDoc(undefined)
+  }
+  }
+
+  const anketDokumanYukle = async ()=>{
+    let formData = new FormData();
+
+    if(changedDoc){
+    formData.append('file', changedDoc);
+    setUploding(true);
+    let { data } = await API.post('/api/anketdocs/single-upload', formData, {
+        onUploadProgress: ({ loaded, total }) => {
+            let progress = ((loaded / total) * 100).toFixed(2);
+            setProgress(progress);
+        }
+    });
+
+      setUplodedImg(data.docPath);
+
+      API.post("/api/instructor/anketDocEkle",{
+
+      lectureDetId:detID,
+      path: data.docPath,
+      name:document.getElementById("anketdocname").value,
+      explanation:document.getElementById("anketdocExp").value
+    }).then((response)=>{
+      if(response.data.message){
+        alert(response.data.message)
+      }})
+
+      setUploding(false);
+
+    setChangedDoc(undefined)
+  }else{
+  alert("Evrak Seçiniz")
+  }
+
+
+  }
+
+
+  const anketDocSil =()=>{
+
+    API.post("/api/egitmen/anketdocsil",{
+        docId:anketDocSrc.current.id,
+    }).then((response)=>{
+      window.location.href = '/lecture';
+      if(response.data.message){
+        alert(response.data.message)
+      }
+
+    })
+
+
+
+  }
+
+  const anketDocGuncelle=()=>{
+
+    API.post("/api/egitmen/anketdocguncelle",{
+        docId:anketDocSrc.current.id,
+        desc:document.getElementById("anketdocviewname").value,
+        exp:document.getElementById("anketdocViewText").value
+    }).then((response)=>{
+
+      if(response.data.message){
+        alert(response.data.message)
+      }
+
+    })
+
+      setSeciliAnketDoc(document.getElementById("anketdocviewname").value)
+      document.getElementById("anketView").style.visibility = "visible";
+      document.getElementById("anketView").style.opacity = '1';
+  }
+
+
+
+
+
   function onClickEventDersici (e)  {
     document.getElementById("dersici").style.visibility = "visible";
     document.getElementById("dersici").style.opacity = '1';
@@ -470,33 +572,33 @@ if(sessionStorage.getItem("isDocPage")==='true'){
       function onClickEventAnketView (e)  {
         document.getElementById("anketView").style.visibility = "visible";
         document.getElementById("anketView").style.opacity = '1';
-      /*  if(e.target.value){
+        if(e.target.value){
 
-          API.post("/api/egitmen/lecturedocumanGoruntule",{
+          API.post("/api/egitmen/anketdocumanGoruntule",{
               docID:e.target.value,
 
                   }).then((response) => {
 
-                    setSeciliLecDoc(response.data[0].doc_name)
-                    lecDocName.current.value=response.data[0].doc_name
-                    lecDocSrc.current.src=response.data[0].path;
-                    lecDocExp.current.value=response.data[0].doc_desc;
-                    lecDocSrc.current.id=e.target.value
+                    setSeciliAnketDoc(response.data[0].doc_name)
+                    anketDocName.current.value=response.data[0].doc_name
+                    anketDocSrc.current.src=response.data[0].path;
+                    anketDocExp.current.value=response.data[0].doc_desc;
+                    anketDocSrc.current.id=e.target.value
           });
         }else{
-          API.post("/api/egitmen/lecturedocumanGoruntule",{
+          API.post("/api/egitmen/anketdocumanGoruntule",{
               docID:e.target.id,
 
                   }).then((response) => {
 
-                    setSeciliLecDoc(response.data[0].doc_name)
-                    lecDocName.current.value=response.data[0].doc_name
-                    lecDocSrc.current.src=response.data[0].path;
-                    lecDocExp.current.value=response.data[0].doc_desc;
-                    lecDocSrc.current.id=e.target.id
+                    setSeciliAnketDoc(response.data[0].doc_name)
+                    anketDocName.current.value=response.data[0].doc_name
+                    anketDocSrc.current.src=response.data[0].path;
+                    anketDocExp.current.value=response.data[0].doc_desc;
+                    anketDocSrc.current.id=e.target.id
 
           });
-        }*/
+        }
         }
 
   return (
@@ -611,10 +713,10 @@ if(sessionStorage.getItem("isDocPage")==='true'){
       <hr style={{width: '90%' }}/>
       <div className = "buyukkutu">
       <ul class="horizonal-slideriki" >
-     {lectureDocs.map((val)=>
+     {anketDocs.map((val)=>
         <button onClick = {onClickEventAnketView} style = {{padding: '0px'}}>
-          <li value={val.lecture_doc_id} className = "koyukutu" >
-            <img style={{paddingTop: '12px', width: '100px', height: '146px'}} id={val.lecture_doc_id} alt="placeholder" src={pdf_icon}/>
+          <li value={val.doc_id} className = "koyukutu" >
+            <img style={{paddingTop: '12px', width: '100px', height: '146px'}} id={val.doc_id} alt="placeholder" src={pdf_icon}/>
             <hr/>
 
                 {val.doc_name}
@@ -840,9 +942,9 @@ if(sessionStorage.getItem("isDocPage")==='true'){
                 <div style = {{ margin: '5px',position: 'relative', right: '70px',color: ' #16394e'}}>
                   Yüklemek İstediğiniz Dökümanı Seçiniz.
                 </div>
-                <input style = {{margin: '5px',position: 'relative', right: '87px',color: ' #16394e'}} type="file" id="myFileAnket" name="filename" accept=".pdf"  onChange={lectureDocInputChanged}></input>
+                <input style = {{margin: '5px',position: 'relative', right: '87px',color: ' #16394e'}} type="file" id="myFileAnket" name="filename" accept=".pdf"  onChange={anketDocInputChanged}></input>
                 <div style = {{ margin: '5px',position: 'relative', right: '140px'}}>
-                  <button type = "button" onClick={lectureDokumanYukle}>Gönder</button>
+                  <button type = "button" onClick={anketDokumanYukle}>Gönder</button>
                   {
                                 isUploding ? (
                                     <div className="flex-grow-1 px-2">
@@ -1011,7 +1113,7 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 <div  className = "modal-content">
 
 <h3 style = {{color: ' #16394e'}}>
-{}
+{seciliAnketDoc}
 <img style = {{ color: '#16394e'}} alt="pen" src={pen}/>
 <a href = '/lecture' >
 <span style = {{color: '#aaa', float: 'right', fontSize: '28px',fontWeight: 'bold', marginTop: '0px', marginRight: '5px', boxSizing: 'border-box'}}>x</span>
@@ -1019,23 +1121,23 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 </h3>
 
 <hr/>
-<iframe style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ></iframe>
+<iframe style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ref={anketDocSrc}></iframe>
 
 <form style = {{ marginTop: '50px', marginRight: '5px', float: 'right'}} >
   <div style = {{ margin: '5px',position: 'relative', right: '79px',color: ' #16394e'}}>
     Evrak Adı :
-    <input className = "textboxdesign" type = 'text' id = "anketdocviewname"   maxlength='15' ></input>
+    <input className = "textboxdesign" type = 'text' id = "anketdocviewname"   maxlength='15' ref={anketDocName} ></input>
   </div>
   <div style = {{ margin: '5px',position: 'relative', right: '151px',color: ' #16394e'}}>
     Evrak Açıklaması
   </div>
   <div style = {{ margin: '5px',position: 'relative', right: '7px',color: ' #16394e'}}>
-    <textarea style = {{backgroundColor:'#a3cbe3', color: '#16394e',width: '400px', height: '320px'}}id="anketdocViewText" maxlength='800' ></textarea>
+    <textarea style = {{backgroundColor:'#a3cbe3', color: '#16394e',width: '400px', height: '320px'}}id="anketdocViewText" maxlength='800' ref={anketDocExp}></textarea>
   </div>
   <div style = {{ marginRight: '30px'}}>
-  <button type = "button">Güncelle</button>
+  <button type = "button" onClick={anketDocGuncelle}>Güncelle</button>
 
-  <button type = "button">Dökümanı Sil</button>
+  <button type = "button" onClick={anketDocSil}>Dökümanı Sil</button>
 
   </div>
 </form>
