@@ -349,6 +349,11 @@ if(sessionStorage.getItem("isDocPage")==='true'){
      document.getElementById("kazanim").style.opacity = '1';
     }
 
+    function onClickEventAnket (e)  {
+      document.getElementById("anketEkle").style.visibility = "visible";
+      document.getElementById("anketEkle").style.opacity = '1';
+      }
+
     function onClickEventDersiciView (e)  {
       document.getElementById("dersiciview").style.visibility = "visible";
       document.getElementById("dersiciview").style.opacity = '1';
@@ -462,6 +467,38 @@ if(sessionStorage.getItem("isDocPage")==='true'){
        }
       }
 
+      function onClickEventAnketView (e)  {
+        document.getElementById("anketView").style.visibility = "visible";
+        document.getElementById("anketView").style.opacity = '1';
+      /*  if(e.target.value){
+
+          API.post("/api/egitmen/lecturedocumanGoruntule",{
+              docID:e.target.value,
+
+                  }).then((response) => {
+
+                    setSeciliLecDoc(response.data[0].doc_name)
+                    lecDocName.current.value=response.data[0].doc_name
+                    lecDocSrc.current.src=response.data[0].path;
+                    lecDocExp.current.value=response.data[0].doc_desc;
+                    lecDocSrc.current.id=e.target.value
+          });
+        }else{
+          API.post("/api/egitmen/lecturedocumanGoruntule",{
+              docID:e.target.id,
+
+                  }).then((response) => {
+
+                    setSeciliLecDoc(response.data[0].doc_name)
+                    lecDocName.current.value=response.data[0].doc_name
+                    lecDocSrc.current.src=response.data[0].path;
+                    lecDocExp.current.value=response.data[0].doc_desc;
+                    lecDocSrc.current.id=e.target.id
+
+          });
+        }*/
+        }
+
   return (
     <div className = "App">
 
@@ -538,7 +575,7 @@ if(sessionStorage.getItem("isDocPage")==='true'){
         <button className = "btnekle" onClick = {onClickEventKazanim} >KAZANIM EKLE</button>
 
         <h3 className = "baslik">
-          KAZANIMLAR
+        DERS ÖĞRENME KAZANIMLARI
         </h3>
       </div>
       <hr style={{width: '90%' }}/>
@@ -560,6 +597,41 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 
       </div>
     </div>
+
+
+
+    <div>
+      <div>
+        <button className = "btnekle" onClick = {onClickEventAnket}>EVRAK EKLE</button>
+
+        <h3 className = "baslik" >
+          ÖLÇME VE DEĞERLENDİRME EVRAKLARI
+        </h3>
+      </div>
+      <hr style={{width: '90%' }}/>
+      <div className = "buyukkutu">
+      <ul class="horizonal-slideriki" >
+     {lectureDocs.map((val)=>
+        <button onClick = {onClickEventAnketView} style = {{padding: '0px'}}>
+          <li value={val.lecture_doc_id} className = "koyukutu" >
+            <img style={{paddingTop: '12px', width: '100px', height: '146px'}} id={val.lecture_doc_id} alt="placeholder" src={pdf_icon}/>
+            <hr/>
+
+                {val.doc_name}
+
+          </li>
+          </button>
+        )}
+
+
+          </ul>
+
+      </div>
+    </div>
+
+
+
+
 
     <div id = "dersici" className = "bg-modal">
       <div  className = "modal-content">
@@ -737,6 +809,70 @@ if(sessionStorage.getItem("isDocPage")==='true'){
       </div>
     </div>
 
+
+
+
+        <div id = "anketEkle" className = "bg-modal">
+          <div  className = "modal-content">
+
+            <h3 style = {{color: ' #16394e'}}>
+              Yeni Döküman Ekle
+              <img style = {{ color: '#16394e'}} alt="pen" src={pen}/>
+              <a href = '/lecture' >
+              <span style = {{color: '#aaa', float: 'right', fontSize: '28px',fontWeight: 'bold', marginTop: '0px', marginRight: '5px', boxSizing: 'border-box'}}>x</span>
+              </a>
+              </h3>
+
+            <hr/>
+            <img style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px'}} alt="placeholder" src={placeholder}></img>
+            <form style = {{ marginTop: '50px', marginRight: '5px', float: 'right'}} >
+
+                <div style = {{ margin: '5px',position: 'relative', right: '79px',color: ' #16394e'}}>
+                  Evrak Adı :
+                <input className = "textboxdesign" type = 'text' id = "anketdocname" placeholder = 'Name' maxlength='15' ></input>
+                </div>
+                <div style = {{ margin: '5px',position: 'relative', right: '151px',color: ' #16394e'}}>
+                  Evrak Açıklaması
+                </div>
+                <div style = {{ margin: '5px',position: 'relative', right: '7px',color: ' #16394e'}}>
+                  <textarea style = {{backgroundColor:'#a3cbe3', color: '#16394e',width: '400px', height: '250px'}} id='anketdocExp' maxlength='800'></textarea>
+                </div>
+                <div style = {{ margin: '5px',position: 'relative', right: '70px',color: ' #16394e'}}>
+                  Yüklemek İstediğiniz Dökümanı Seçiniz.
+                </div>
+                <input style = {{margin: '5px',position: 'relative', right: '87px',color: ' #16394e'}} type="file" id="myFileAnket" name="filename" accept=".pdf"  onChange={lectureDocInputChanged}></input>
+                <div style = {{ margin: '5px',position: 'relative', right: '140px'}}>
+                  <button type = "button" onClick={lectureDokumanYukle}>Gönder</button>
+                  {
+                                isUploding ? (
+                                    <div className="flex-grow-1 px-2">
+
+                                          <progress id="file" value={uploadProgress} max="100"> {uploadProgress} </progress>
+                                          {uploadProgress}%
+                                    </div>
+                                ) : null
+                            }
+
+                            {
+                                uploadedImg && !isUploding ? (
+                                    <div style={{ marginTop :'5px'}}>
+
+                                    Yüklendi
+                                    </div>
+
+                                ) : null
+                            }
+                </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+
+
+
     <div id = "dersiciview" className = "bg-modal">
 <div  className = "modal-content">
 
@@ -869,6 +1005,42 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 </div>
 </div>
 
+
+
+<div id = "anketView" className = "bg-modal">
+<div  className = "modal-content">
+
+<h3 style = {{color: ' #16394e'}}>
+{}
+<img style = {{ color: '#16394e'}} alt="pen" src={pen}/>
+<a href = '/lecture' >
+<span style = {{color: '#aaa', float: 'right', fontSize: '28px',fontWeight: 'bold', marginTop: '0px', marginRight: '5px', boxSizing: 'border-box'}}>x</span>
+</a>
+</h3>
+
+<hr/>
+<iframe style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ></iframe>
+
+<form style = {{ marginTop: '50px', marginRight: '5px', float: 'right'}} >
+  <div style = {{ margin: '5px',position: 'relative', right: '79px',color: ' #16394e'}}>
+    Evrak Adı :
+    <input className = "textboxdesign" type = 'text' id = "anketdocviewname"   maxlength='15' ></input>
+  </div>
+  <div style = {{ margin: '5px',position: 'relative', right: '151px',color: ' #16394e'}}>
+    Evrak Açıklaması
+  </div>
+  <div style = {{ margin: '5px',position: 'relative', right: '7px',color: ' #16394e'}}>
+    <textarea style = {{backgroundColor:'#a3cbe3', color: '#16394e',width: '400px', height: '320px'}}id="anketdocViewText" maxlength='800' ></textarea>
+  </div>
+  <div style = {{ marginRight: '30px'}}>
+  <button type = "button">Güncelle</button>
+
+  <button type = "button">Dökümanı Sil</button>
+
+  </div>
+</form>
+</div>
+</div>
 
 
 
