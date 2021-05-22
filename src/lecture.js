@@ -790,7 +790,7 @@ if(sessionStorage.getItem("isDocPage")==='true'){
       </div>
     </div>
 
-    <div id = "sinavdoc" className = "bg-modal">
+    <div id = "sinavdoc" className = "bg-modal2">
       <div  className = "modal-content">
 
         <h3 style = {{color: ' #16394e'}}>
@@ -1010,7 +1010,7 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 </div>
 </div>
 
-<div id = "sinavdocview" className = "bg-modal">
+<div id = "sinavdocview" className = "bg-modal2">
 <div  className = "modal-content">
 
   <h3 style = {{color: ' #16394e'}}>
