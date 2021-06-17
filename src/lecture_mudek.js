@@ -15,6 +15,7 @@ function Lecture_Mudek() {
   const[examDocs,setExamDocs]= useState([]);
   const[kazanimlar,setKazanimlar]= useState([]);
   const[detID,setdetId]= useState("");
+  const[anketDocs,setAnketDocs]= useState([]);
 
   const lecDocSrc = useRef(null);
   const lecDocExp = useRef(null);
@@ -24,6 +25,10 @@ function Lecture_Mudek() {
   const kazanimSrc = useRef(null);
   const [seciliKazanim, setSeciliKazanim] = useState("");
 
+
+    const anketDocSrc = useRef(null);
+    const anketDocExp = useRef(null);
+    const [seciliAnketDoc, setSeciliAnketDoc] = useState("");
 
   const examDocName = useRef(null);
   const examDocSrc = useRef(null);
@@ -66,6 +71,14 @@ if(sessionStorage.getItem("isDocPage")==='true'){
 
     }).then((response) => {
       setExamDocs( response.data);
+
+    });
+
+    API.post("/api/egitmen/anketDocGoruntule",{
+        lecDetID:response.data[0].lecture_det_id
+
+    }).then((response) => {
+      setAnketDocs( response.data);
 
     });
 
@@ -210,6 +223,39 @@ if(sessionStorage.getItem("isDocPage")==='true'){
      }
     }
 
+    function onClickEventAnketView (e)  {
+
+      document.getElementById("anketview").style.visibility = "visible";
+      document.getElementById("anketview").style.opacity = '1';
+      if(e.target.value){
+
+        API.post("/api/egitmen/anketdocumanGoruntule",{
+            docID:e.target.value,
+
+                }).then((response) => {
+
+                  setSeciliAnketDoc(response.data[0].doc_name)
+
+                  anketDocSrc.current.src=response.data[0].path;
+                  anketDocExp.current.value=response.data[0].doc_desc;
+                  anketDocSrc.current.id=e.target.value
+        });
+      }else{
+        API.post("/api/egitmen/anketdocumanGoruntule",{
+            docID:e.target.id,
+
+                }).then((response) => {
+
+                  setSeciliAnketDoc(response.data[0].doc_name)
+
+                  anketDocSrc.current.src=response.data[0].path;
+                  anketDocExp.current.value=response.data[0].doc_desc;
+                  anketDocSrc.current.id=e.target.id
+
+        });
+      }
+      }
+
 
   return (
     <div className = "App">
@@ -283,7 +329,7 @@ if(sessionStorage.getItem("isDocPage")==='true'){
       <div>
 
         <h3 className = "baslik">
-          KAZANIMLAR
+          DERS ÖĞRENME KAZANIMLARI
         </h3>
       </div>
       <hr style={{width: '90%' }}/>
@@ -298,6 +344,33 @@ if(sessionStorage.getItem("isDocPage")==='true'){
      </li>
      </button>
    )}
+          </ul>
+      </div>
+    </div>
+
+    <div>
+      <div>
+
+        <h3 className = "baslik" >
+        ÖLÇME VE DEĞERLENDİRME EVRAKLARI
+        </h3>
+      </div>
+      <hr style={{width: '90%' }}/>
+      <div className = "buyukkutu">
+      <ul class="horizonal-slideriki">
+      {anketDocs.map((val)=>
+         <button onClick = {onClickEventAnketView} style = {{padding: '0px'}}>
+           <li value={val.doc_id} className = "koyukutu" >
+             <img style={{paddingTop: '12px', width: '100px', height: '146px'}} id={val.doc_id} alt="placeholder" src={pdf_icon}/>
+             <hr/>
+
+                 {val.doc_name}
+
+           </li>
+           </button>
+         )}
+
+
           </ul>
       </div>
     </div>
@@ -391,6 +464,36 @@ if(sessionStorage.getItem("isDocPage")==='true'){
   </form>
 </div>
 </div>
+
+<div id = "anketview" className = "bg-modal">
+<div  className = "modal-content">
+
+<h3 style = {{color: ' #16394e'}}>
+{seciliAnketDoc}
+<img style = {{ color: '#16394e'}} alt="pen" src={pen}/>
+<a href = '/lecture_mudek' >
+<span style = {{color: '#aaa', float: 'right', fontSize: '28px',fontWeight: 'bold', marginTop: '0px', marginRight: '5px', boxSizing: 'border-box'}}>x</span>
+</a>
+</h3>
+
+<hr/>
+<iframe style={{ margin: '5vh', float: 'left' ,border: 'solid 1px', borderRadius: '5px',width: '320px', height: '470px'}} alt="placeholder" src={placeholder} ref={anketDocSrc}></iframe>
+<form style = {{ marginTop: '50px' , marginRight: '5px', float: 'right'}} >
+
+  <div style = {{ margin: '5px',position: 'relative', right: '20.5vh',color: ' #16394e'}}>
+    Evrak Açıklaması
+  </div>
+  <div style = {{ margin: '5px',position: 'relative', right: '1vh',color: ' #16394e'}}>
+    <textarea style = {{backgroundColor:'#a3cbe3', color: '#16394e',width: '400px', height: '320px'}} ref={lecDocExp} readonly='true' ref={anketDocExp}></textarea>
+  </div>
+  <div style = {{ marginRight: '30px'}}>
+
+  </div>
+</form>
+</div>
+</div>
+
+
 
     </div>
   );
